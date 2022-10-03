@@ -50,4 +50,45 @@ or
 
 ---SQL Injection (medium)---
 
->
+Protection code:
+
+function sqli_check_1($data)
+{
+   
+    return addslashes($data);
+    
+}
+
+The addslashes() function is used. In PHP, the addslashes() function adds a backslash before certain predefined characters in the input string;
+
+The predefined characters are:
+
+    apostrophe(')
+    Double quotes(")
+    Backslash (\)
+    NULL
+
+---
+
+
+
+
+---SQL Injection (high)---
+
+Protection source code:
+
+function sqli_check_2($data)
+{
+   
+    return mysql_real_escape_string($data);
+    
+}
+
+The mysql_real_escape_string() function is used.
+
+---
+
+
+
+
+---
